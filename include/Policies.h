@@ -15,3 +15,9 @@ public:
     virtual uint32_t get_victim(const CacheSet& set) = 0;
     virtual std::unique_ptr<EvictionPolicyInterface> clone() const = 0;
 };
+
+class WritePolicyInterface {
+public:
+    virtual ~WritePolicyInterface() = default;
+    virtual void on_write_hit(class CacheLevel& current_level);
+};
