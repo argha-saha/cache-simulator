@@ -1,14 +1,20 @@
 #pragma once
 
 #include <memory>
+#include <optional>
+#include <stdexcept>
 #include <vector>
 
 #include "CacheBlock.h"
 #include "Policies.h"
 
+/** @brief Represents a single set within a cache level. */
 class CacheSet {
 public:
-    CacheSet(uint32_t associativity);
+    ~CacheSet() = default;
+
+    CacheSet(uint32_t ways, const EvictionPolicyInterface& policy);
+    std::optional<uint32_t> find_block(uint64_t tag) const;
 
 private:
     uint32_t associativity;

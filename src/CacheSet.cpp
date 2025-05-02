@@ -15,3 +15,13 @@ CacheSet::CacheSet(uint32_t ways, const EvictionPolicyInterface& policy)
 
     eviction_policy->initialize(associativity);
 }
+
+std::optional<uint32_t> CacheSet::find_block(uint64_t tag) const {
+    for (uint32_t i = 0; i < associativity; ++i) {
+        if (blocks[i].is_valid() && blocks[i].get_tag() == tag) {
+            return i;
+        }
+    }
+
+    return std::nullopt;
+}
