@@ -46,7 +46,7 @@ include(GoogleTest)
 # Gather test source files
 file(GLOB TEST_SOURCE_FILES
     CONFIGURE_DEPENDS
-    "tests/*.cpp"
+    "${PROJECT_SOURCE_DIR}/tests/*.cpp"  # Absolute path
 )
 
 # Define the test executable target
@@ -55,8 +55,13 @@ add_executable(CacheSimulatorTests ${TEST_SOURCE_FILES})
 # Link the test executable against the core library and GoogleTest
 target_link_libraries(CacheSimulatorTests
     PRIVATE
-        CacheSimulatorLib  # Link against the code being tested
-        GTest::gtest_main  # Links gtest & provides default main() for tests
+        CacheSimulatorLib
+        GTest::gtest
+)
+
+target_include_directories(CacheSimulatorTests 
+    PRIVATE
+        "${PROJECT_SOURCE_DIR}/include"
 )
 
 gtest_discover_tests(CacheSimulatorTests)
@@ -66,3 +71,4 @@ message(STATUS "Configuring Project: ${PROJECT_NAME}")
 message(STATUS "C++ Standard: ${CMAKE_CXX_STANDARD}")
 message(STATUS "Source Files: ${SOURCE_FILES}")
 message(STATUS "Include Directories: ${PROJECT_SOURCE_DIR}/include")
+message(STATUS "Test Source Files: ${TEST_SOURCE_FILES}")
