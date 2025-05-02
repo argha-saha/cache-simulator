@@ -33,3 +33,15 @@ uint32_t CacheSet::get_victim() const {
 
     return eviction_policy->get_victim(*this);
 }
+
+void CacheSet::access_block(uint32_t index) {
+    if (index >= associativity) {
+        throw std::out_of_range("CacheSet: Index out of range.");
+    }
+
+    if (!eviction_policy) {
+        throw std::runtime_error("CacheSet: Eviction policy was not initialized.");
+    }
+
+    eviction_policy->on_access(*this, index);
+}
