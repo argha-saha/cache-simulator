@@ -25,3 +25,11 @@ std::optional<uint32_t> CacheSet::find_block(uint64_t tag) const {
 
     return std::nullopt;
 }
+
+uint32_t CacheSet::get_victim() const {
+    if (!eviction_policy) {
+        throw std::runtime_error("CacheSet: Eviction policy was not initialized.");
+    }
+
+    return eviction_policy->get_victim(*this);
+}
