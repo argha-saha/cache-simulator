@@ -10,8 +10,8 @@ struct CacheStatistics {
     uint64_t evictions = 0;
     uint64_t dirty_evictions = 0;
 
+    uint64_t total_accesses() const;
     double read_hit_rate() const;
     double write_hit_rate() const;
     double overall_hit_rate() const;
-    uint64_t total_accesses() const;
 };
