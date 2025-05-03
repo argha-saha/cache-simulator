@@ -71,3 +71,13 @@ void CacheSet::replace_block(uint32_t index, uint64_t new_tag, bool dirty) {
 
     eviction_policy->on_fill(*this, index);
 }
+
+bool CacheSet::has_invalid_block() const {
+    for (const auto& block : blocks) {
+        if (!block.is_valid()) {
+            return true;
+        }
+    }
+
+    return false;
+}

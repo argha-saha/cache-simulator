@@ -45,20 +45,26 @@ public:
     virtual bool should_allocate_on_miss(CacheLevel& level, uint64_t address) = 0;
 };
 
-/** @brief Available eviction policies (e.g. LRU) */
+/** 
+ * @brief Available eviction policies (e.g. LRU) 
+ */
 enum class EvictionPolicyType {
     LRU,
     RANDOM,
     FIFO
 };
 
-/** @brief Available write policies (write-back and write-through) */
+/** 
+ * @brief Available write policies (write-back and write-through) 
+ */
 enum class WritePolicyType {
     WRITE_BACK,
     WRITE_THROUGH
 };
 
-/** @brief Available allocation policies (write-allocate and no-write-allocate) */
+/** 
+ * @brief Available allocation policies (write-allocate and no-write-allocate) 
+ */
 enum class AllocationPolicyType {
     WRITE_ALLOCATE,
     NO_WRITE_ALLOCATE
