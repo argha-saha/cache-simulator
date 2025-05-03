@@ -46,7 +46,7 @@ public:
      * @brief Clones the currently LRU policy instance.
      * @return A unique pointer to a new instance of the LRU policy.
      */
-    std::unique_ptr<EvictionPolicyInterface> clone();
+    std::unique_ptr<EvictionPolicyInterface> clone() const override;
 
 private:
     uint32_t associativity = 0;
