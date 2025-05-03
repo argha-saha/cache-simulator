@@ -14,7 +14,7 @@ class EvictionPolicyInterface {
 public:
     virtual ~EvictionPolicyInterface() = default;
 
-    virtual void initialize(uint32_t associativity) = 0;
+    virtual void initialize(uint32_t ways) = 0;
     virtual void on_access(const CacheSet& set, uint32_t index) = 0;
     virtual void on_fill(const CacheSet& set, uint32_t index) = 0;
     virtual uint32_t get_victim_index(const CacheSet& set) = 0;
