@@ -26,12 +26,20 @@ std::optional<uint32_t> CacheSet::find_block(uint64_t tag) const {
     return std::nullopt;
 }
 
-uint32_t CacheSet::get_victim() const {
+uint32_t CacheSet::get_victim_index() const {
     if (!eviction_policy) {
         throw std::runtime_error("CacheSet: Eviction policy was not initialized.");
     }
 
     return eviction_policy->get_victim(*this);
+}
+
+CacheBlock& CacheSet::get_block(uint32_t index) {
+    try {
+        return blocks.at(index);
+    } catch (const std::out_of_range&) {
+        throw std::out_of_range("CacheSet: Index out of range.");
+    }
 }
 
 void CacheSet::access_block(uint32_t index) {
