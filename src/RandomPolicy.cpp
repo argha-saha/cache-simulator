@@ -16,7 +16,16 @@ void RandomPolicy::on_access(const CacheSet& set, uint32_t index) {}
 
 void RandomPolicy::on_fill(const CacheSet& set, uint32_t index) {}
 
-uint32_t RandomPolicy::get_victim_index(const CacheSet& set) {}
+uint32_t RandomPolicy::get_victim_index(const CacheSet& set) {
+    // Return index of the first invalid block if found
+    auto invalid_index = set.get_invalid_block_index();
+    if (invalid_index.has_value()) {
+        return invalid_index.value();
+    }
+
+    // Random victim selection
+    return uni_dist(rng);
+}
 
 std::unique_ptr<EvictionPolicyInterface> RandomPolicy::clone() const {
     return std::make_unique<RandomPolicy>(*this);
