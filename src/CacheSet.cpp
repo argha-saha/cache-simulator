@@ -31,7 +31,7 @@ uint32_t CacheSet::get_victim_index() const {
         throw std::runtime_error("CacheSet: Eviction policy was not initialized.");
     }
 
-    return eviction_policy->get_victim(*this);
+    return eviction_policy->get_victim_index(*this);
 }
 
 CacheBlock& CacheSet::get_block(uint32_t index) {
