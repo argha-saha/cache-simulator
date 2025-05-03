@@ -9,7 +9,7 @@ void FIFOPolicy::on_access(const CacheSet& set, uint32_t index) {}
 
 void FIFOPolicy::on_fill(const CacheSet& set, uint32_t index) {
     bool found = false;
-    
+
     for (const auto& i : fifo) {
         if (i == index) {
             found = true;
@@ -24,4 +24,6 @@ void FIFOPolicy::on_fill(const CacheSet& set, uint32_t index) {
 
 uint32_t FIFOPolicy::get_victim_index(const CacheSet& set) {}
 
-std::unique_ptr<EvictionPolicyInterface> FIFOPolicy::clone() const {}
+std::unique_ptr<EvictionPolicyInterface> FIFOPolicy::clone() const {
+    return std::make_uniqeu<FIFOPolicy>(*this);
+}
