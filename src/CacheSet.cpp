@@ -45,3 +45,21 @@ void CacheSet::access_block(uint32_t index) {
 
     eviction_policy->on_access(*this, index);
 }
+
+void CacheSet::replace_block(uint32_t index, uint64_t new_tag, bool dirty) {
+    if (index >= associativity) {
+        throw std::out_of_range("CacheSet: Index out of range.");
+    }
+
+    if (!eviction_policy) {
+        throw std::runtime_error("CacheSet: Eviction policy was not initialized.");
+    }
+
+    CacheBlock& block = blocks[index];
+
+    block.set_valid(true);
+    block.set_tag(new_tag);
+    block.set_dirty(dirty);
+
+    eviction_policy->on_fill(*this, index);
+}

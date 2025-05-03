@@ -17,6 +17,7 @@ public:
     std::optional<uint32_t> find_block(uint64_t tag) const;
     uint32_t get_victim() const;
     void access_block(uint32_t index);
+    void replace_block(uint32_t index, uint64_t new_tag, bool dirty);
 
 private:
     uint32_t associativity;
