@@ -45,6 +45,6 @@ uint32_t LRUPolicy::get_victim_index(const CacheSet& set) {
     return victim_index;
 }
 
-std::unique_ptr<EvictionPolicyInterface> LRUPolicy::clone() {
+std::unique_ptr<EvictionPolicyInterface> LRUPolicy::clone() const {
     return std::make_unique<LRUPolicy>(*this);
 }
