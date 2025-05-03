@@ -53,6 +53,11 @@ public:
      */
     bool has_invalid_block() const;
 
+    /**
+     * @brief Get the index of the first invalid block.
+     */
+    std::optional<uint32_t> get_invalid_block_index() const;
+
 private:
     uint32_t associativity;
     std::vector<CacheBlock> blocks;

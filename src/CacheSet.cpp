@@ -81,3 +81,13 @@ bool CacheSet::has_invalid_block() const {
 
     return false;
 }
+
+std::optional<uint32_t> CacheSet::get_invalid_block_index() const {
+    for (uint32_t i = 0; i < associativity; ++i) {
+        if (!blocks[i].is_valid()) {
+            return i;
+        }
+    }
+
+    return std::nullopt;
+}
