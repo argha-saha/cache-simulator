@@ -11,3 +11,13 @@ void RandomPolicy::initialize(uint32_t ways) {
         throw std::invalid_argument("RandomPolicy: Associativity must be greater than zero.");
     }
 }
+
+void RandomPolicy::on_access(const CacheSet& set, uint32_t index) {}
+
+void RandomPolicy::on_fill(const CacheSet& set, uint32_t index) {}
+
+uint32_t RandomPolicy::get_victim_index(const CacheSet& set) {}
+
+std::unique_ptr<EvictionPolicyInterface> RandomPolicy::clone() const {
+    return std::make_unique<RandomPolicy>(*this);
+}

@@ -43,7 +43,7 @@ public:
     uint32_t get_victim_index(const CacheSet& set) override;
 
     /**
-     * @brief Clones the currently LRU policy instance.
+     * @brief Clones the LRU policy instance.
      * @return A unique pointer to a new instance of the LRU policy.
      */
     std::unique_ptr<EvictionPolicyInterface> clone() const override;
