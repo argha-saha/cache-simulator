@@ -17,7 +17,7 @@ public:
      * @brief Initializes the class member variables.
      * @param ways The associativity of the cache set.
      */
-    void initialize(uint32_t ways);
+    void initialize(uint32_t ways) override;
 
     /**
      * @brief Updates the counter of the accessed block.
@@ -32,6 +32,19 @@ public:
      * @param index The index of the filled block within the set.
      */
     void on_fill(const CacheSet& set, uint32_t index) override;
+
+    /**
+     * @brief Returns the index of the victim block to be evicted.
+     * @param set The cache set from which to select the victim.
+     * @return The index of the victim block.
+     */
+    uint32_t get_victim(const CacheSet& set) override;
+
+    /**
+     * @brief Clones the currently LRU policy instance.
+     * @return A unique pointer to a new instance of the LRU policy.
+     */
+    std::unique_ptr<EvictionPolicyInterface> clone();
 
 private:
     uint32_t associativity = 0;
