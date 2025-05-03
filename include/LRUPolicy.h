@@ -4,6 +4,8 @@
 #include <limits>
 #include <vector>
 
+#include "CacheSet.h"
+#include "CacheBlock.h"
 #include "Policies.h"
 
 class LRUPolicy : public EvictionPolicyInterface {
@@ -38,7 +40,7 @@ public:
      * @param set The cache set from which to select the victim.
      * @return The index of the victim block.
      */
-    uint32_t get_victim(const CacheSet& set) override;
+    uint32_t get_victim_index(const CacheSet& set) override;
 
     /**
      * @brief Clones the currently LRU policy instance.

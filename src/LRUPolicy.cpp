@@ -24,10 +24,23 @@ void LRUPolicy::on_fill(const CacheSet& set, uint32_t index) {
     on_access(set, index);
 }
 
-uint32_t LRUPolicy::get_victim(const CacheSet& set) {
-    uint32_t victim_index = 0;
+uint32_t LRUPolicy::get_victim_index(const CacheSet& set) {
+    // Return index of the first invalid block if found
+    auto invalid_index = set.get_invalid_block_index();
+    if (invalid_index.has_value()) {
+        return invalid_index.value();
+    }
+
     uint64_t min_counter = std::numeric_limits<uint64_t>::max();
-    bool found_valid_block = false;
+    uint32_t victim_index = 0;
+
+    // Return the index of the block with the minimum counter value (LRU block)
+    for (uint32_t i = 0; i < associativity; ++i) {
+        if (lru_stack[i] < min_counter) {
+            min_counter = lru_stack[i];
+            victim_index = i;
+        }
+    }
 
     return victim_index;
 }
