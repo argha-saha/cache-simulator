@@ -1,5 +1,7 @@
 #pragma once
 
+#include <iostream>
+#include <limits>
 #include <vector>
 
 #include "Policies.h"
@@ -15,6 +17,11 @@ public:
      * @brief Initializes the class member variables.
      */
     void initialize(uint32_t ways);
+
+    /**
+     * @brief Updates the counter of the accessed block.
+     */
+    void on_access(const CacheSet& set, uint32_t index) override;
 
 private:
     uint32_t associativity = 0;
