@@ -2,10 +2,12 @@
 
 #include <cstdint>
 #include <memory>
+#include <vector>
 
 #include "CacheConfig.h"
 #include "CacheStatistics.h"
 #include "CacheSet.h"
+#include "MemoryAccess.h"
 #include "Policies.h"
 
 class CacheLevel {
@@ -72,13 +74,15 @@ private:
     uint32_t block_size;
     uint32_t associativity;
     uint32_t num_sets;
-    uint32_t index_bits;
     uint32_t block_offset_bits;
-
-    CacheLevel* next_level;
+    uint32_t index_bits;
+    std::vector<CacheSet> sets;
 
     std::unique_ptr<WritePolicyInterface> write_policy;
     std::unique_ptr<AllocationPolicyInterface> allocation_policy;
+
+    CacheLevel* next_level;
+    MemoryAccessInterface* memory_accessor;
 
     CacheStatistics statistics;
 };
