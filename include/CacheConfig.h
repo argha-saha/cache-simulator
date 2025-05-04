@@ -26,6 +26,6 @@ struct CacheConfig {
 
     /** Cache policies */
     EvictionPolicyType eviction_policy = EvictionPolicyType::LRU;
-    WritePolicyType wrote_policy = WritePolicyType::WRITE_BACK;
+    WritePolicyType write_policy = WritePolicyType::WRITE_BACK;
     AllocationPolicyType allocation_policy = AllocationPolicyType::WRITE_ALLOCATE;
 };
