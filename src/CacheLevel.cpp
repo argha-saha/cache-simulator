@@ -75,3 +75,11 @@ CacheLevel::CacheLevel(CacheConfig config, CacheLevel* next_level)
         sets.emplace_back(associativity, *eviction_policy);
     }
 }
+
+CacheSet& CacheLevel::get_set(uint32_t index) {
+    try {
+        return sets.at(index);
+    } catch (const std::out_of_range&) {
+        throw std::out_of_range("CacheLevel: Set index out of range.");
+    }
+}

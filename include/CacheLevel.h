@@ -43,6 +43,13 @@ public:
     CacheLevel& operator=(CacheLevel&&) = delete;
 
     /**
+     * @brief Gets a reference to a specific CacheSet within this cache level.
+     * @param index The index of the set to retrieve.
+     * @return Reference to the CacheSet object.
+     */
+    CacheSet& get_set(uint32_t index);
+
+    /**
      * @brief Simulates a read operation on this cache level.
      * @param address The memory address to read from.
      * @return True on a read hit, false on a read miss.
