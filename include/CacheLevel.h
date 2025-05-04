@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdint>
+#include <iostream>
 #include <memory>
 #include <vector>
 
@@ -8,6 +9,7 @@
 #include "CacheStatistics.h"
 #include "CacheSet.h"
 #include "MemoryAccess.h"
+#include "MemoryAddress.h"
 #include "Policies.h"
 
 class CacheLevel {
@@ -76,6 +78,8 @@ public:
     void set_next_level(CacheLevel* level);
 
 private:
+    void handle_miss(uint64_t address, bool is_write);
+
     std::string name;
     uint64_t capacity;
     uint32_t block_size;

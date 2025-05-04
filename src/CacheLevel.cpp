@@ -76,10 +76,60 @@ CacheLevel::CacheLevel(CacheConfig config, CacheLevel* next_level)
     }
 }
 
+void CacheLevel::handle_miss(uint64_t address, bool is_write) {
+    if (next_level) {
+        // Read request to fetch data from the next level
+        next_level->read(address);
+    } else if (memory_accessor) {
+        // Read request to fetch data from main memory
+        memory_accessor->access_memory(address, false);
+        // TODO: Fill the cache block with data from memory
+    } else {
+        throw std::runtime_error("CacheLevel: No next level or memory accessor defined for cache miss handling.");
+    }
+}
+
 CacheSet& CacheLevel::get_set(uint32_t index) {
     try {
         return sets.at(index);
     } catch (const std::out_of_range&) {
         throw std::out_of_range("CacheLevel: Set index out of range.");
+    }
+}
+
+bool CacheLevel::read(uint64_t address) {
+    // Decompose the address
+    MemoryAddress mem_address(address, block_size, num_sets);
+
+    // Get the set associated with the index
+    CacheSet& set = get_set(mem_address.index);
+
+    // Try to find a block with a matching tag in this set
+    std::optional<uint32_t> block_index = set.find_block(mem_address.tag);
+
+    if (block_index.has_value()) {
+        // Read hit
+        ++statistics.read_hits;
+        set.access_block(block_index.value());
+        return true;
+    } else {
+        // Read miss
+        ++statistics.read_misses;
+        
+        // Fetch data from lower memory level
+        handle_miss(address, false);
+
+        // TODO: Check if this is correct
+        block_index = set.find_block(mem_address.tag);
+        if (block_index.has_value()) {
+            // If the block was found after fetching, access it
+            set.access_block(block_index.value());
+            return true;
+        } else {
+            std::cerr << "CacheLevel: Invalid fetch after read miss." << std::endl;
+        }
+
+        // Initially a miss
+        return false;
     }
 }
