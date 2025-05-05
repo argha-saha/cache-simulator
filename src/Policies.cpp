@@ -4,8 +4,7 @@
 #include "FIFOPolicy.h"
 #include "WriteBackPolicy.h"
 #include "WriteThroughPolicy.h"
-#include "WriteAllocatePolicy.h"
-#include "NoWriteAllocatePolicy.h"
+#include "AllocationPolicies.h"
 
 std::unique_ptr<EvictionPolicyInterface> create_eviction_policy(EvictionPolicyType policy) {
     switch (policy) {
