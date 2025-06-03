@@ -42,6 +42,13 @@ public:
      * @brief Notifies the eviction policy of the block that has been accessed. 
      */
     void access_block(uint32_t index);
+    void update_block(uint32_t index, uint64_t new_tag, bool set_dirty = false);
+    CacheBlock& get_block(uint32_t index);
+    const CacheBlock& get_block(uint32_t index) const;
+    uint32_t get_associativity() const;
+    bool has_invalid_block() const;
+    std::optional<uint32_t> find_invalid_block() const;
+    const std::vector<CacheBlock>& get_blocks() const;
 
     /** 
      * @brief Replaces the contents of a block within this set. 
