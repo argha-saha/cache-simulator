@@ -23,8 +23,3 @@ TEST(UtilsTest, Log2) {
     EXPECT_EQ(log2(8), 3);
     EXPECT_EQ(log2(16), 4);
 }
-
-int main(int argc, char **argv) {
-    testing::InitGoogleTest(&argc, argv);
-    return RUN_ALL_TESTS();
-}
