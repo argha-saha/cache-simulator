@@ -42,6 +42,10 @@ CacheBlock& CacheSet::get_block(uint32_t index) {
     }
 }
 
+uint32_t CacheSet::get_associativity() const {
+    return associativity;
+}
+
 void CacheSet::access_block(uint32_t index) {
     if (index >= associativity) {
         throw std::out_of_range("CacheSet: Index out of range.");

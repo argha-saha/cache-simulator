@@ -18,6 +18,12 @@ public:
      */
     CacheSet(uint32_t ways, const EvictionPolicyInterface& policy);
 
+    // Prevent copying and allow moving
+    CacheSet(const CacheSet&) = delete;
+    CacheSet& operator=(const CacheSet&) = delete;
+    CacheSet(CacheSet&&) = default;
+    CacheSet& operator=(CacheSet&&) = default;
+
     /** 
      * @brief Default destructor. 
      */
