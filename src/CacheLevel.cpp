@@ -26,7 +26,7 @@ CacheLevel::CacheLevel(CacheConfig config, CacheLevel* next_level)
     }
 
     // Total size must be divisible by block size
-    if (config.capacity & config.block_size != 0) {
+    if (config.capacity && config.block_size != 0) {
         throw std::invalid_argument("CacheLevel: Cache capacity must be divisible by block size.");
     }
 
