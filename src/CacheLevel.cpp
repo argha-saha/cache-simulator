@@ -77,6 +77,10 @@ CacheLevel::CacheLevel(CacheConfig config, CacheLevel* next_level)
     }
 }
 
+const std::string& CacheLevel::get_name() const {
+    return name;
+}
+
 void CacheLevel::handle_miss(uint64_t address, bool is_write) {
     if (next_level) {
         // Read request to fetch data from the next level
@@ -158,4 +162,8 @@ MemoryAccessInterface* CacheLevel::get_memory_accessor() const {
 
 void CacheLevel::set_memory_accessor(MemoryAccessInterface* accessor) {
     memory_accessor = accessor;
+}
+
+CacheStatistics& CacheLevel::get_statistics() {
+    return statistics;
 }

@@ -45,6 +45,12 @@ public:
     CacheLevel& operator=(CacheLevel&&) = delete;
 
     /**
+     * @brief Gets the name of this cache level.
+     * @return Name of the cache level.
+     */
+    const std::string& get_name() const;
+
+    /**
      * @brief Gets a reference to a specific CacheSet within this cache level.
      * @param index The index of the set to retrieve.
      * @return Reference to the CacheSet object.
@@ -92,6 +98,12 @@ public:
      * @param accessor Pointer to the MemoryAccessInterface instance to be used for memory accesses.
      */
     void set_memory_accessor(MemoryAccessInterface* accessor);
+
+    /**
+     * @brief Returns the statistics for this cache level.
+     * @return Reference to the CacheStatistics object.
+     */
+    CacheStatistics& get_statistics();
 
 private:
     void handle_miss(uint64_t address, bool is_write);

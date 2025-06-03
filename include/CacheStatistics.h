@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdint>
+#include <iostream>
 
 struct CacheStatistics {
     uint64_t read_hits = 0;
@@ -33,4 +34,9 @@ struct CacheStatistics {
      * @return Overall hit rate as a double.
      */
     double overall_hit_rate() const;
+
+    /**
+     * @brief Prints the statistics to the console.
+     */
+    void print(const std::string& cache_name) const;
 };
