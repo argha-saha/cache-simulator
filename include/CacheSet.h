@@ -19,6 +19,7 @@ public:
     CacheSet(uint32_t ways, const EvictionPolicyInterface& policy);
 
     // Prevent copying and allow moving
+    // TODO: Look into why deleting the move constructor and assignment operator causes issues
     CacheSet(const CacheSet&) = delete;
     CacheSet& operator=(const CacheSet&) = delete;
     CacheSet(CacheSet&&) = default;
