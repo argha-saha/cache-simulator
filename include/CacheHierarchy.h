@@ -1,8 +1,11 @@
 #pragma once
 
 #include "CacheConfig.h"
+#include "CacheLevel.h"
 #include "MemoryAccess.h"
 #include "Policies.h"
+
+#include <memory>
 
 class CacheHierarchy : public MemoryAccessInterface {
 public:
