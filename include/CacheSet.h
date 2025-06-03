@@ -42,12 +42,30 @@ public:
      * @brief Notifies the eviction policy of the block that has been accessed. 
      */
     void access_block(uint32_t index);
+
+    /**
+     * @brief Updates the fields of the block.
+     */
     void update_block(uint32_t index, uint64_t new_tag, bool set_dirty = false);
-    CacheBlock& get_block(uint32_t index);
+
+    /**
+     * @brief Provides a read-only reference to a block within the set.
+     */
     const CacheBlock& get_block(uint32_t index) const;
+
+    /**
+     * @brief Returns the associativity of the block.
+     */
     uint32_t get_associativity() const;
-    bool has_invalid_block() const;
+
+    /**
+     * @brief Finds the first invalid block in the set.
+     */
     std::optional<uint32_t> find_invalid_block() const;
+
+    /** 
+     * @brief Returns a list of the blocks in the set.
+     */
     const std::vector<CacheBlock>& get_blocks() const;
 
     /** 
