@@ -50,6 +50,11 @@ public:
     const std::string& get_name() const;
 
     /**
+     * @return Total capacity of this cache level in bytes.
+     */
+    const uint64_t get_capacity() const { return capacity;}
+
+    /**
      * @return Block size of this cache level in bytes.
      */
     const uint32_t get_block_size() const;
