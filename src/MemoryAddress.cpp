@@ -16,11 +16,14 @@ MemoryAddress::MemoryAddress(uint64_t addr, uint32_t block_size, uint32_t num_se
     }
 
     // Fully associative cache does not have index bits
-    uint32_t index_bits = (num_sets == 1) ? 0 : log2(num_sets);
     uint32_t block_offset_bits = log2(block_size);
+    uint32_t index_bits = (num_sets == 1) ? 0 : log2(num_sets);
 
+    // Extract block offset
+    block_offset = static_cast<uint32_t>(addr & ((1ULL << block_offset_bits) - 1));
+
+    // Extract index
     uint64_t index_mask = (index_bits == 0) ? 0 : ((1ULL << index_bits) - 1);
-
     if (index_bits > 0 && index_bits < 64) {
         index = (addr >> block_offset_bits) & index_mask;
     } else if (index_bits == 0) {
@@ -29,10 +32,8 @@ MemoryAddress::MemoryAddress(uint64_t addr, uint32_t block_size, uint32_t num_se
         throw std::invalid_argument("Index bits exceed address size.");
     }
 
-    block_offset = static_cast<uint32_t>(addr & ((1ULL << block_offset_bits) - 1));
-
+    // Extract tag
     uint32_t tag_mask = index_bits + block_offset_bits;
-    
     if (tag_mask < 64) {
         tag = addr >> tag_mask;
     } else {
