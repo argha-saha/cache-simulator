@@ -45,10 +45,19 @@ public:
     CacheLevel& operator=(CacheLevel&&) = delete;
 
     /**
-     * @brief Gets the name of this cache level.
      * @return Name of the cache level.
      */
     const std::string& get_name() const;
+
+    /**
+     * @return Block size of this cache level in bytes.
+     */
+    const uint32_t get_block_size() const;
+
+    /**
+     * @return Number of sets in this cache level.
+     */
+    const uint32_t get_num_sets() const;
 
     /**
      * @brief Gets a reference to a specific CacheSet within this cache level.

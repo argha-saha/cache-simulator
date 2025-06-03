@@ -84,6 +84,14 @@ const std::string& CacheLevel::get_name() const {
     return name;
 }
 
+const uint32_t CacheLevel::get_block_size() const {
+    return block_size;
+}
+
+const uint32_t CacheLevel::get_num_sets() const {
+    return num_sets;
+}
+
 void CacheLevel::handle_miss(uint64_t address, bool is_write) {
     if (next_level) {
         // Read request to fetch data from the next level

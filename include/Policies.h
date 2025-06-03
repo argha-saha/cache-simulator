@@ -75,7 +75,7 @@ public:
      * @param block_index The index of the block that was hit.
      */
     virtual void on_write_hit(
-        class CacheLevel& current_level, 
+        CacheLevel& current_level, 
         uint64_t address, 
         uint32_t block_index
     ) = 0;
