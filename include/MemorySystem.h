@@ -1,5 +1,6 @@
 #pragma once
 
+#include "CacheConfig.h"
 #include "CacheHierarchy.h"
 #include <vector>
 
