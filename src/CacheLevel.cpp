@@ -1,4 +1,5 @@
 #include "CacheLevel.h"
+#include "MemoryAccess.h"
 #include "Utils.h"
 
 CacheLevel::CacheLevel(CacheConfig config, CacheLevel* next_level)
@@ -132,4 +133,29 @@ bool CacheLevel::read(uint64_t address) {
         // Initially a miss
         return false;
     }
+}
+
+bool CacheLevel::write(uint64_t address) {
+    // TODO: Implement write operation
+    return true;
+}
+
+void CacheLevel::fill(uint64_t address) {
+    // TODO: Implement fill operation
+}
+
+CacheLevel* CacheLevel::get_next_level() const {
+    return next_level;
+}
+
+void CacheLevel::set_next_level(CacheLevel* level) {
+    next_level = level;
+}
+
+MemoryAccessInterface* CacheLevel::get_memory_accessor() const {
+    return memory_accessor;
+}
+
+void CacheLevel::set_memory_accessor(MemoryAccessInterface* accessor) {
+    memory_accessor = accessor;
 }

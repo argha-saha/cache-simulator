@@ -7,10 +7,10 @@ bool WriteAllocatePolicy::should_allocate_on_miss(CacheLevel& level, uint64_t ad
 }
 
 bool NoWriteAllocatePolicy::should_allocate_on_miss(CacheLevel& level, uint64_t address) {
-    // CacheLevel* next_cache_level = level.get_next_level();
-    // MemoryAccessInterface* memory_accessor = level.get_memory_accessor();
-    CacheLevel* next_cache_level = nullptr;
-    MemoryAccessInterface* memory_accessor = nullptr;
+    CacheLevel* next_cache_level = level.get_next_level();
+    MemoryAccessInterface* memory_accessor = level.get_memory_accessor();
+    // CacheLevel* next_cache_level = nullptr;
+    // MemoryAccessInterface* memory_accessor = nullptr;
 
     if (next_cache_level) {
         next_cache_level->write(address);

@@ -72,10 +72,26 @@ public:
     void fill(uint64_t address);
 
     /**
+     * @brief Returns a pointer to the next cache level.
+     */
+    CacheLevel* get_next_level() const;
+
+    /**
      * @brief Sets the next cache level in the hierarchy.
      * @param level Pointer to the next CacheLevel instance, or nullptr if this is the last level.
      */
     void set_next_level(CacheLevel* level);
+
+    /**
+     * @brief Returns a pointer to the memory accessor.
+     */
+    MemoryAccessInterface* get_memory_accessor() const;
+
+    /**
+     * @brief Sets the memory accessor for this cache level.
+     * @param accessor Pointer to the MemoryAccessInterface instance to be used for memory accesses.
+     */
+    void set_memory_accessor(MemoryAccessInterface* accessor);
 
 private:
     void handle_miss(uint64_t address, bool is_write);
