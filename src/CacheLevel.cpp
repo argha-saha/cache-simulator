@@ -1,5 +1,6 @@
 #include "CacheLevel.h"
 #include "MemoryAccess.h"
+#include "MemoryAddress.h"
 #include "Utils.h"
 
 CacheLevel::CacheLevel(CacheConfig config, CacheLevel* next_level)
@@ -140,8 +141,42 @@ bool CacheLevel::read(uint64_t address) {
 }
 
 bool CacheLevel::write(uint64_t address) {
-    // TODO: Implement write operation
-    return true;
+    // Decompose the address
+    MemoryAddress mem_address(address, block_size, num_sets);
+
+    // Get the set associated with the index
+    CacheSet& set = get_set(mem_address.index);
+
+    // Try to find a block with a matching tag in this set
+    std::optional<uint32_t> block_index = set.find_block(mem_address.tag);
+
+    if (block_index.has_value()) {
+        // Write hit
+        ++statistics.write_hits;
+        write_policy->on_write_hit(*this, address, *block_index);
+        return true;
+    } else {
+        // Write miss
+        ++statistics.write_misses;
+        
+        if (allocation_policy->should_allocate_on_miss(*this, address)) {
+            // 1. Fetch the block
+            handle_miss(address, true);
+
+            // 2. Perform write hit logic
+            block_index = set.find_block(mem_address.tag);
+
+            if (block_index.has_value()) {
+                write_policy->on_write_hit(*this, address, *block_index);
+            } else {
+                std::cerr << "CacheLevel: Invalid fetch after write miss." << std::endl;
+            }
+        } else {
+            // No-write-allocate
+        }
+
+        return false;
+    }
 }
 
 void CacheLevel::fill(uint64_t address) {
