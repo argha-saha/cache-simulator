@@ -108,13 +108,15 @@ public:
 private:
     void handle_miss(uint64_t address, bool is_write);
 
+    void evict_and_replace(const MemoryAddress& address, uint32_t set_index);
+
     std::string name;
     uint64_t capacity;
     uint32_t block_size;
     uint32_t associativity;
     uint32_t num_sets;
-    uint32_t block_offset_bits;
     uint32_t index_bits;
+    uint32_t block_offset_bits;
     std::vector<CacheSet> sets;
 
     std::unique_ptr<WritePolicyInterface> write_policy;

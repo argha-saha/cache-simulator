@@ -2,6 +2,8 @@
 #include "MemoryAccess.h"
 #include "MemoryAddress.h"
 #include "Utils.h"
+#include <iostream>
+#include <limits>
 
 CacheLevel::CacheLevel(CacheConfig config, CacheLevel* next_level)
     : name(config.name),
@@ -103,6 +105,46 @@ CacheSet& CacheLevel::get_set(uint32_t index) {
     }
 }
 
+void CacheLevel::evict_and_replace(const MemoryAddress& address, uint32_t set_index) {
+    CacheSet& set = get_set(set_index);
+
+    // 1. Determine the victim block
+    uint32_t victim_index = set.get_victim_index();
+
+    // 2. Get the state of the victim block before eviction
+    const CacheBlock& victim_block = set.get_block(victim_index);
+    const bool victim_valid = victim_block.is_valid();
+    const bool victim_dirty = victim_block.is_dirty();
+
+    // 3. Handle write-back
+    if (victim_valid && victim_dirty) {
+        ++statistics.evictions;
+        ++statistics.dirty_evictions;
+
+        // Reconstruct the address of the victim block
+        uint64_t victim_address = victim_block.get_address(set_index, index_bits, block_offset_bits);
+
+        if (victim_address != std::numeric_limits<uint64_t>::max()) {
+            if (next_level) {
+                // Write to the next cache level
+                next_level->write(victim_address);
+            } else if (memory_accessor) {
+                // Write to main memory
+                memory_accessor->access_memory(victim_address, true);
+            } else {
+                std::cerr << "CacheLevel: No next level or memory accessor defined for write-back." << std::endl;
+            }
+        } else {
+            std::cerr << "CacheLevel: Invalid victim address during eviction." << std::endl;
+        }
+    } else if (victim_valid) {
+        ++statistics.evictions;
+    }
+
+    // 4. Update the block's state
+    set.replace_block(victim_index, address.tag, false);
+}
+
 bool CacheLevel::read(uint64_t address) {
     // Decompose the address
     MemoryAddress mem_address(address, block_size, num_sets);
@@ -180,7 +222,8 @@ bool CacheLevel::write(uint64_t address) {
 }
 
 void CacheLevel::fill(uint64_t address) {
-    // TODO: Implement fill operation
+    MemoryAddress mem_address(address, block_size, num_sets);
+    evict_and_replace(mem_address, mem_address.index);
 }
 
 CacheLevel* CacheLevel::get_next_level() const {
