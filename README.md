@@ -19,5 +19,9 @@ Cache simulation program written in C++
     - FIFO
 - Statistics tracking
 
+## Configuration
+
+## Traces
+
 ## Build Instructions
 Coming Soon

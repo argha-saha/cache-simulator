@@ -23,11 +23,9 @@ void MemorySystem::configure_cache(const std::vector<CacheConfig>& configuration
 
 void MemorySystem::execute_access(AccessType access_type, uint64_t address) {
     switch (access_type) {
-        case AccessType::R:
         case AccessType::READ:
             hierarchy.cpu_read(address);
             break;
-        case AccessType::W:
         case AccessType::WRITE:
             hierarchy.cpu_write(address);
             break;
