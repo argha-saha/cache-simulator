@@ -15,4 +15,6 @@ TEST(CacheLevelTest, Constructor) {
 
     CacheLevel cache_level(config, nullptr);
     EXPECT_EQ(cache_level.get_capacity(), 1024);
+    EXPECT_EQ(cache_level.get_block_size(), 64);
+    EXPECT_EQ(cache_level.get_num_sets(), 4);
 }
