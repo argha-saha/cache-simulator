@@ -1,0 +1,13 @@
+{
+    "cache_levels": [
+        {
+            "name": "L1 D$",
+            "capacity": 65536,
+            "block_size": 64,
+            "associativity": 4,
+            "eviction_policy": "LRU",
+            "write_policy": "WRITE_BACK",
+            "allocation_policy": "WRITE_ALLOCATE"
+        }
+    ]
+}
