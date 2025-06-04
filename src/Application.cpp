@@ -14,7 +14,7 @@ AccessType READ = AccessType::READ;
 AccessType W = AccessType::W;
 AccessType WRITE = AccessType::WRITE;
 
-void Application::run() {
+void Application::run(int argc, char** argv) {
     try {
         MemorySystem simulator;
 
@@ -30,14 +30,22 @@ void Application::run() {
 
         std::vector<CacheConfig> hierarchy_configs = {l1_config};
         simulator.configure_cache(hierarchy_configs);
-        
-        // Miss
-        simulator.execute_access(R, 0x1000);
 
-        // Hit (Same block as previous access)
-        simulator.execute_access(W, 0x1004);
+        if (argc < 2) {
+            // Miss
+            simulator.execute_access(R, 0x1000);
 
-        simulator.print_statistics();
+            // Hit (Same block as previous access)
+            simulator.execute_access(W, 0x1004);
+
+            simulator.print_statistics();
+        } else {
+            std::string trace_file_path = argv[1];
+            std::cout << "\n=== Running Simulation from Trace File ===\n";
+
+            simulator.run_trace(trace_file_path);
+            simulator.print_statistics();
+        }
     } catch (const std::exception& e) {
         std::cerr << "An error occurred: " << e.what() << std::endl;
     }

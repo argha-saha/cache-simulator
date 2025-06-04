@@ -51,6 +51,12 @@ public:
      */
     std::pair<uint64_t, uint64_t> get_main_memory_statistics() const;
 
+    /**
+     * @brief Runs a trace file to simulate memory accesses.
+     * @param trace_file_path Path to the trace file.
+     */
+    void run_trace(const std::string& trace_file_path);
+
 private:
     CacheHierarchy hierarchy;
 };

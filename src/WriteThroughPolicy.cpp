@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-#include "MemoryAccess.h"
+#include "MemoryAccessInterface.h"
 #include "MemoryAddress.h"
 #include "WriteThroughPolicy.h"
 

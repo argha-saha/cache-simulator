@@ -6,7 +6,7 @@
 #include "CacheConfig.h"
 #include "CacheLevel.h"
 #include "CacheStatistics.h"
-#include "MemoryAccess.h"
+#include "MemoryAccessInterface.h"
 #include "Policies.h"
 
 class CacheHierarchy final : public MemoryAccessInterface {
