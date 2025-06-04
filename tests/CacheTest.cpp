@@ -8,9 +8,9 @@
 #include "MemorySystem.h"
 #include "Policies.h"
 
-AccessType R = AccessType::R;
+AccessType R = AccessType::READ;
 AccessType READ = AccessType::READ;
-AccessType W = AccessType::W;
+AccessType W = AccessType::WRITE;
 AccessType WRITE = AccessType::WRITE;
 
 TEST(CacheTest, Constructor) {

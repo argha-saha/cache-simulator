@@ -3,42 +3,51 @@
 #include <exception>
 #include <fstream>
 #include <iostream>
-#include <stdexcept>
-#include <vector>
 #include <nlohmann/json.hpp>
+#include <stdexcept>
+#include <string>
+#include <unordered_map>
+#include <vector>
 
 #include "AccessType.h"
 #include "CacheConfig.h"
 #include "MemorySystem.h"
+#include "Parser.hpp"
 #include "Policies.h"
 
-AccessType R = AccessType::R;
+AccessType R = AccessType::READ;
 AccessType READ = AccessType::READ;
-AccessType W = AccessType::W;
+AccessType W = AccessType::WRITE;
 AccessType WRITE = AccessType::WRITE;
 
 using json = nlohmann::json;
 
 EvictionPolicyType Application::parse_eviction_policy(const std::string& policy_str) const {
-    std::string policy_str_upper = policy_str;
-    if (policy_str_upper == "LRU") return EvictionPolicyType::LRU;
-    if (policy_str_upper == "FIFO") return EvictionPolicyType::FIFO;
-    if (policy_str_upper == "Random") return EvictionPolicyType::RANDOM;
-    throw std::invalid_argument("Invalid eviction policy: " + policy_str);
+    static const std::unordered_map<std::string, EvictionPolicyType> policy_map = {
+        {"LRU", EvictionPolicyType::LRU},
+        {"FIFO", EvictionPolicyType::FIFO},
+        {"RANDOM", EvictionPolicyType::RANDOM}
+    };
+
+    return parse_policy(policy_str, policy_map, "Invalid eviction policy.");
 }
 
 WritePolicyType Application::parse_write_policy(const std::string& policy_str) const {
-    std::string policy_str_upper = policy_str;
-    if (policy_str_upper == "WRITE_BACK") return WritePolicyType::WRITE_BACK;
-    if (policy_str_upper == "WRITE_THROUGH") return WritePolicyType::WRITE_THROUGH;
-    throw std::invalid_argument("Invalid write policy: " + policy_str);
+    static const std::unordered_map<std::string, WritePolicyType> policy_map = {
+        {"WRITE_BACK", WritePolicyType::WRITE_BACK},
+        {"WRITE_THROUGH", WritePolicyType::WRITE_THROUGH}
+    };
+
+    return parse_policy(policy_str, policy_map, "Invalid write policy.");
 }
 
 AllocationPolicyType Application::parse_allocation_policy(const std::string& policy_str) const {
-    std::string policy_str_upper = policy_str;
-    if (policy_str_upper == "WRITE_ALLOCATE") return AllocationPolicyType::WRITE_ALLOCATE;
-    if (policy_str_upper == "NO_WRITE_ALLOCATE") return AllocationPolicyType::NO_WRITE_ALLOCATE;
-    throw std::invalid_argument("Invalid allocation policy: " + policy_str);
+    static const std::unordered_map<std::string, AllocationPolicyType> policy_map = {
+        {"WRITE_ALLOCATE", AllocationPolicyType::WRITE_ALLOCATE},
+        {"NO_WRITE_ALLOCATE", AllocationPolicyType::NO_WRITE_ALLOCATE}
+    };
+
+    return parse_policy(policy_str, policy_map, "Invalid allocation policy.");
 }
 
 bool Application::load_config(const std::string& config_file_path) {
@@ -136,35 +145,65 @@ bool Application::load_config(const std::string& config_file_path) {
 void Application::run(int argc, char** argv) {
     try {
         MemorySystem simulator;
+        std::string config_file_path;
+        std::string trace_file_path;
 
-        CacheConfig l1_config(
-            "L1",
-            64 * 1024, // 64 KB
-            64,      // 64 bytes block size
-            4,    // 4-way set associative
-            EvictionPolicyType::LRU,
-            WritePolicyType::WRITE_BACK,
-            AllocationPolicyType::WRITE_ALLOCATE
-        );
+        // Positional arguments
+        if (argc > 1) {
+            if (!load_config(argv[1])) {
+                std::cerr << "Error: Failed to load cache configuration from file: " << argv[1] << std::endl;
 
-        std::vector<CacheConfig> hierarchy_configs = {l1_config};
-        simulator.configure_cache(hierarchy_configs);
+                CacheConfig l1_config(
+                    "L1",
+                    64 * 1024, // 64 KB
+                    64,      // 64 bytes block size
+                    4,    // 4-way set associative
+                    EvictionPolicyType::LRU,
+                    WritePolicyType::WRITE_BACK,
+                    AllocationPolicyType::WRITE_ALLOCATE
+                );
 
-        if (argc < 2) {
-            // Miss
-            simulator.execute_access(R, 0x1000);
+                loaded_cache_configs = {l1_config};
+            }
 
-            // Hit (Same block as previous access)
-            simulator.execute_access(W, 0x1004);
-
-            simulator.print_statistics();
+            if (argc > 2) {
+                trace_file_path = argv[2];
+            } else {
+                std::cerr << "Warning: Trace file path not provided. Defaulting to hardcoded trace." << std::endl;
+            }
         } else {
-            std::string trace_file_path = argv[1];
-            std::cout << "\n=== Running Simulation from Trace File ===\n";
+            std::cout << "No configuration file provided. Using hardcoded default L1 cache." << std::endl;
+            std::cout << "Usage: " << argv[0] << " [config_file_path] [trace_file_path]" << std::endl;
 
-            simulator.run_trace(trace_file_path);
-            simulator.print_statistics();
+            CacheConfig l1_config(
+                "L1",
+                64 * 1024, // 64 KB
+                64,      // 64 bytes block size
+                4,    // 4-way set associative
+                EvictionPolicyType::LRU,
+                WritePolicyType::WRITE_BACK,
+                AllocationPolicyType::WRITE_ALLOCATE
+            );
+
+            loaded_cache_configs = {l1_config};
         }
+
+        if (loaded_cache_configs.empty()) {
+            std::cerr << "Error: No cache configurations loaded." << std::endl;
+            return;
+        }
+
+        simulator.configure_cache(loaded_cache_configs);
+
+        if (!trace_file_path.empty()) {
+            simulator.run_trace(trace_file_path);
+        } else {
+            std::cout << "\nRunning Hardcoded Trace...\n";
+            simulator.execute_access(R, 0x1000);
+            simulator.execute_access(W, 0x1004);
+        }
+
+        simulator.print_statistics();
     } catch (const std::exception& e) {
         std::cerr << "An error occurred: " << e.what() << std::endl;
     }
