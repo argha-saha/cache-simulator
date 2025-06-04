@@ -7,7 +7,7 @@
 #include "CacheConfig.h"
 #include "CacheStatistics.h"
 #include "CacheSet.h"
-#include "MemoryAccess.h"
+#include "MemoryAccessInterface.h"
 #include "MemoryAddress.h"
 #include "Policies.h"
 

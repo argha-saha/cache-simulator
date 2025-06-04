@@ -2,5 +2,5 @@
 
 class Application {
 public:
-    void run();
+    void run(int argc, char** argv);
 };
