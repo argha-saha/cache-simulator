@@ -36,3 +36,11 @@ void MemorySystem::execute_access(AccessType access_type, uint64_t address) {
 void MemorySystem::print_statistics() const {
     hierarchy.print_statistics();
 }
+
+std::optional<CacheStatistics> MemorySystem::get_cache_level_statistics(const std::string& level_name) const {
+    return hierarchy.get_cache_level_statistics(level_name);
+}
+
+std::pair<uint64_t, uint64_t> MemorySystem::get_main_memory_statistics() const {
+    return hierarchy.get_main_memory_statistics();
+}

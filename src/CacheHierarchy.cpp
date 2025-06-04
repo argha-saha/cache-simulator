@@ -44,9 +44,9 @@ void CacheHierarchy::print_statistics() const {
     if (levels.empty()) {
         std::cout << "No cache levels defined.\n";
     } else {
-        for (const auto& level : levels) {
-            if (level) {
-                level->get_statistics().print(level->get_name());
+        for (const auto& level_ptr : levels) {
+            if (level_ptr) {
+                level_ptr->get_statistics().print(level_ptr->get_name());
             }
         }
     }
@@ -54,4 +54,18 @@ void CacheHierarchy::print_statistics() const {
     std::cout << "\n=== Main Memory Accesses ===\n";
     std::cout << "Reads: " << main_memory_reads << std::endl;
     std::cout << "Writes: " << main_memory_writes << std::endl;
+}
+
+std::optional<CacheStatistics> CacheHierarchy::get_cache_level_statistics(const std::string& level_name) const {
+    for (const auto& level_ptr : levels) {
+        if (level_ptr && level_ptr->get_name() == level_name) {
+            return level_ptr->get_statistics();
+        }
+    }
+
+    return std::nullopt;
+}
+
+std::pair<uint64_t, uint64_t> CacheHierarchy::get_main_memory_statistics() const {
+    return {main_memory_reads, main_memory_writes};
 }

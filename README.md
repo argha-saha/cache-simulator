@@ -20,5 +20,4 @@ Cache simulation program written in C++
 - Statistics tracking
 
 ## Build Instructions
-
-## Architecture
+Coming Soon

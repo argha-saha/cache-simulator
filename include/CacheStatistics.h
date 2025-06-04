@@ -39,4 +39,12 @@ struct CacheStatistics {
      * @brief Prints the statistics to the console.
      */
     void print(const std::string& cache_name) const;
+
+    // Getters
+    uint64_t get_read_hits() const { return read_hits; }
+    uint64_t get_read_misses() const { return read_misses; }
+    uint64_t get_write_hits() const { return write_hits; }
+    uint64_t get_write_misses() const { return write_misses; }
+    uint64_t get_evictions() const { return evictions; }
+    uint64_t get_dirty_evictions() const { return dirty_evictions; }
 };

@@ -1,9 +1,11 @@
 #pragma once
 
 #include <memory>
+#include <optional>
 
 #include "CacheConfig.h"
 #include "CacheLevel.h"
+#include "CacheStatistics.h"
 #include "MemoryAccess.h"
 #include "Policies.h"
 
@@ -42,6 +44,19 @@ public:
      * @brief Prints statistics for all cache levels and main memory.
      */
     void print_statistics() const;
+
+    /**
+     * @brief Retrieves statistics for a specific cache level by name.
+     * @param level_name Name of the cache level.
+     * @return Optional CacheStatistics if the level exists, otherwise std::nullopt.
+     */
+    std::optional<CacheStatistics> get_cache_level_statistics(const std::string& level_name) const;
+
+    /**
+     * @brief Retrieves the main memory access statistics.
+     * @return A pair containing the number of reads and writes to main memory.
+     */
+    std::pair<uint64_t, uint64_t> get_main_memory_statistics() const;
 
 private:
     std::vector<std::unique_ptr<CacheLevel>> levels;
