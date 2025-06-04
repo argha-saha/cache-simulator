@@ -1,10 +1,13 @@
 #include "Policies.h"
+
+#include <stdexcept>
+
+#include "AllocationPolicies.h"
+#include "FIFOPolicy.h"
 #include "LRUPolicy.h"
 #include "RandomPolicy.h"
-#include "FIFOPolicy.h"
 #include "WriteBackPolicy.h"
 #include "WriteThroughPolicy.h"
-#include "AllocationPolicies.h"
 
 std::unique_ptr<EvictionPolicyInterface> create_eviction_policy(EvictionPolicyType policy) {
     switch (policy) {

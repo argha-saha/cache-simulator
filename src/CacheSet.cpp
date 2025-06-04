@@ -1,5 +1,8 @@
 #include "CacheSet.h"
 
+#include <iostream>
+#include <stdexcept>
+
 CacheSet::CacheSet(uint32_t ways, const EvictionPolicyInterface& policy)
     : associativity(ways), blocks(ways) 
 {
@@ -17,12 +20,16 @@ CacheSet::CacheSet(uint32_t ways, const EvictionPolicyInterface& policy)
 }
 
 std::optional<uint32_t> CacheSet::find_block(uint64_t tag) const {
+    // std::cout << "DEBUG: CacheSet::find_block - Set (ways: " << associativity << "): Searching for Tag=0x"
+    //           << std::hex << tag << std::dec << std::endl;
+
     for (uint32_t i = 0; i < associativity; ++i) {
         if (blocks[i].is_valid() && blocks[i].get_tag() == tag) {
             return i;
         }
     }
 
+    // std::cout << "DEBUG: CacheSet::find_block() No match found." << std::endl;
     return std::nullopt;
 }
 
@@ -58,7 +65,7 @@ void CacheSet::access_block(uint32_t index) {
     eviction_policy->on_access(*this, index);
 }
 
-void CacheSet::replace_block(uint32_t index, uint64_t new_tag, bool dirty) {
+void CacheSet::replace_block(uint32_t index, uint64_t new_tag, bool new_dirty) {
     if (index >= associativity) {
         throw std::out_of_range("CacheSet: Index out of range.");
     }
@@ -71,7 +78,10 @@ void CacheSet::replace_block(uint32_t index, uint64_t new_tag, bool dirty) {
 
     block.set_valid(true);
     block.set_tag(new_tag);
-    block.set_dirty(dirty);
+    block.set_dirty(new_dirty);
+
+    // std::cout << "DEBUG: CacheSet::replace_block - Set (ways " << associativity << "): Replaced block " << index
+    //           << " with Tag=0x" << std::hex << new_tag << std::dec << ", Valid=true" << std::endl;
 
     eviction_policy->on_fill(*this, index);
 }

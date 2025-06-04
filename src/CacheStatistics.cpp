@@ -1,5 +1,7 @@
 #include "CacheStatistics.h"
 
+#include <iostream>
+
 uint64_t CacheStatistics::total_accesses() const {
     return read_hits + read_misses + write_hits + write_misses;
 }

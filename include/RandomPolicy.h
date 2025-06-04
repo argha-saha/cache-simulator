@@ -3,7 +3,6 @@
 #include <random>
 
 #include "CacheSet.h"
-#include "CacheBlock.h"
 #include "Policies.h"
 
 class RandomPolicy : public EvictionPolicyInterface {

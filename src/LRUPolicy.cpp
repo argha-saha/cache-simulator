@@ -1,5 +1,8 @@
 #include "LRUPolicy.h"
 
+#include <iostream>
+#include <limits>
+
 void LRUPolicy::initialize(uint32_t ways) {
     associativity = ways;
     lru_stack.resize(associativity, 0);

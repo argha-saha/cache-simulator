@@ -1,14 +1,11 @@
 #pragma once
 
-#include <algorithm>
 #include <deque>
-#include <iostream>
 
 #include "CacheSet.h"
-#include "CacheBlock.h"
 #include "Policies.h"
 
-class FIFOPolicy : public EvictionPolicyInterface {
+class FIFOPolicy final : public EvictionPolicyInterface {
 public:
     /**
      * @brief Constructs a new LRU eviction policy.

@@ -1,4 +1,7 @@
 #include "MemoryAddress.h"
+
+#include <stdexcept>
+
 #include "Utils.h"
 
 MemoryAddress::MemoryAddress(uint64_t addr, uint32_t block_size, uint32_t num_sets)

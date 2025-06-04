@@ -1,7 +1,7 @@
 #pragma once
 
 #include <cstdint>
-#include <iostream>
+#include <string>
 
 struct CacheStatistics {
     uint64_t read_hits = 0;

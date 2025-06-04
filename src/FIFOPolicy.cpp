@@ -1,5 +1,8 @@
 #include "FIFOPolicy.h"
 
+#include <algorithm>
+#include <iostream>
+
 void FIFOPolicy::initialize(uint32_t ways) {
     associativity = ways;
     fifo.clear();

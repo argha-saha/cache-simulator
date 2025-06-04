@@ -1,7 +1,6 @@
 #pragma once
 
 #include <cstdint>
-#include <iostream>
 #include <memory>
 #include <vector>
 
@@ -12,36 +11,22 @@
 #include "MemoryAddress.h"
 #include "Policies.h"
 
-class CacheLevel {
+class CacheLevel final {
 public:
     /**
      * @brief Constructs a new CacheLevel instance.
+     * @param config Configuration parameters for this cache level.
+     * @param next_level Pointer to the next cache level in the hierarchy (nullptr if none).
      */
     CacheLevel(CacheConfig config, CacheLevel* next_level);
 
-    /**
-     * @brief Default destructor
-     */
-    virtual ~CacheLevel() = default;
+    // Default destructor
+    ~CacheLevel() = default;
 
-    /**
-     * @brief Copy constructor
-     */
+    // Prevent copying and moving
     CacheLevel(const CacheLevel&) = delete;
-
-    /**
-     * @brief Move constructor
-     */
     CacheLevel(CacheLevel&&) = delete;
-
-    /**
-     * @brief Copy assignment
-     */
     CacheLevel& operator=(const CacheLevel&) = delete;
-
-    /**
-     * @brief Move assignment
-     */
     CacheLevel& operator=(CacheLevel&&) = delete;
 
     /**
@@ -85,8 +70,18 @@ public:
     void set_memory_accessor(MemoryAccessInterface* accessor) { memory_accessor = accessor; }
 
 private:
+    /**
+     * @brief Handles a cache miss.
+     * @param address The memory address that caused the miss.
+     * @param is_write True if this is a write operation, false for read.
+     */
     void handle_miss(uint64_t address, bool is_write);
 
+    /**
+     * @brief Evicts a block from the cache and replaces it with a new block.
+     * @param address The memory address of the block to be replaced.
+     * @param set_index The index of the set from which to evict the block.
+     */
     void evict_and_replace(const MemoryAddress& address, uint32_t set_index);
 
     std::string name;

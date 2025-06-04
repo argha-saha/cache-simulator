@@ -1,5 +1,7 @@
 #include "CacheBlock.h"
 
+#include <limits>
+
 uint64_t CacheBlock::get_address(uint64_t set_index, uint32_t index_bits, uint32_t offset_bits) const {
     if (!valid) {
         return std::numeric_limits<uint64_t>::max();
@@ -28,10 +30,4 @@ uint64_t CacheBlock::get_address(uint64_t set_index, uint32_t index_bits, uint32
     }
 
     return reconstructed_address;
-}
-
-void CacheBlock::reset() {
-    tag = 0;
-    valid = false;
-    dirty = false;
 }

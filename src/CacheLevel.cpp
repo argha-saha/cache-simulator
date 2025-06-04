@@ -1,9 +1,9 @@
 #include "CacheLevel.h"
-#include "MemoryAccess.h"
-#include "MemoryAddress.h"
-#include "Utils.h"
+
 #include <iostream>
 #include <limits>
+
+#include "Utils.h"
 
 CacheLevel::CacheLevel(CacheConfig config, CacheLevel* next_level)
     : name(config.name),
@@ -81,13 +81,28 @@ CacheLevel::CacheLevel(CacheConfig config, CacheLevel* next_level)
 }
 
 void CacheLevel::handle_miss(uint64_t address, bool is_write) {
+    // std::cout << "DEBUG: CacheLevel " << name << ": Entered handleMiss for addr 0x" << std::hex << address << std::dec
+    //           << ", is_write=" << is_write << std::endl;
+
+    // if (next_level) {
+    //     std::cout << "DEBUG: CacheLevel " << name << ": next_level is NOT NULL. Calling next_level->read()." << std::endl;
+    // } else {
+    //     std::cout << "DEBUG: CacheLevel " << name << ": next_level IS NULL." << std::endl;
+    // }
+
+    // if (memory_accessor) {
+    //     std::cout << "DEBUG: CacheLevel " << name << ": memory_accessor is NOT NULL." << std::endl;
+    // } else {
+    //     std::cout << "DEBUG: CacheLevel " << name << ": memory_accessor IS NULL." << std::endl;
+    // }
+
     if (next_level) {
         // Read request to fetch data from the next level
         next_level->read(address);
     } else if (memory_accessor) {
         // Read request to fetch data from main memory
         memory_accessor->access_memory(address, false);
-        // TODO: Fill the cache block with data from memory
+        fill(address);
     } else {
         throw std::runtime_error("CacheLevel: No next level or memory accessor defined for cache miss handling.");
     }
@@ -162,6 +177,9 @@ bool CacheLevel::read(uint64_t address) {
         
         // Fetch data from lower memory level
         handle_miss(address, false);
+
+        // std::cout << "DEBUG: CacheLevel " << name << ": After handling miss for addr 0x" << std::hex << address << std::dec
+        //           << ". Re-checking for tag 0x" << mem_address.tag << " in set " << mem_address.index << std::endl;
 
         // TODO: Check if this is correct
         block_index = set.find_block(mem_address.tag);

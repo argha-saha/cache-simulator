@@ -1,5 +1,9 @@
 #include "CacheLevel.h"
+
+#include <iostream>
+
 #include "MemoryAccess.h"
+#include "MemoryAddress.h"
 #include "WriteThroughPolicy.h"
 
 void WriteThroughPolicy::on_write_hit(

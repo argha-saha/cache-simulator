@@ -1,14 +1,12 @@
 #pragma once
 
 #include <cstdint>
-#include <limits>
 
-class CacheBlock {
+class CacheBlock final {
 public:
-    /**
-     * @brief Default constructor for CacheBlock.
-     */
+    // Default constructor and destructor
     CacheBlock() = default;
+    ~CacheBlock() = default;
 
     /**
      * @brief Reconstructs the address from the block's tag, set index, and offset bits.
@@ -18,12 +16,6 @@ public:
      * @return The reconstructed address.
      */
     uint64_t get_address(uint64_t set_index, uint32_t index_bits, uint32_t offset_bits) const;
-
-    /**
-     * @brief Resets the block to its initial state.
-     * Clears the tag, sets valid to false, and dirty to false.
-     */
-    void reset();
 
     // Getters
     uint64_t get_tag() const { return tag; }

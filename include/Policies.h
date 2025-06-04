@@ -1,11 +1,7 @@
 #pragma once
 
 #include <cstdint>
-#include <iostream>
 #include <memory>
-#include <stdexcept>
-
-#include "MemoryAccess.h"
 
 // Forward declarations
 class CacheBlock;
@@ -18,9 +14,7 @@ class CacheLevel;
  */
 class EvictionPolicyInterface {
 public:
-    /**
-     * @brief Default destructor for the eviction policy interface.
-     */
+    // Default destructor
     virtual ~EvictionPolicyInterface() = default;
 
     /**
@@ -63,9 +57,7 @@ public:
  */
 class WritePolicyInterface {
 public:
-    /**
-     * @brief Default destructor for the write policy interface.
-     */
+    // Default destructor
     virtual ~WritePolicyInterface() = default;
 
     /**
@@ -87,7 +79,13 @@ public:
  */
 class AllocationPolicyInterface {
 public:
+    // Default destructor
     virtual ~AllocationPolicyInterface() = default;
+
+    /**
+     * @brief Determines if a block should be allocated on a write miss.
+     * @return Returns true if a block should be allocated, false otherwise.
+     */
     virtual bool should_allocate_on_miss(CacheLevel& level, uint64_t address) = 0;
 };
 

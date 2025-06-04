@@ -1,4 +1,5 @@
 #include "MemorySystem.h"
+
 #include <iostream>
 #include <stdexcept>
 
@@ -16,15 +17,19 @@ void MemorySystem::configure_cache(const std::vector<CacheConfig>& configuration
     }
 }
 
-void MemorySystem::execute_access(uint64_t address, char access_type) {
-    char type = std::toupper(access_type);
-
-    if (type == 'R') {
-        hierarchy.cpu_read(address);
-    } else if (type == 'W') {
-        hierarchy.cpu_write(address);
-    } else {
-        std::cerr << "MemorySystem: Invalid access type '" << access_type << "'. Use 'R' for read or 'W' for write." << std::endl;
+void MemorySystem::execute_access(AccessType access_type, uint64_t address) {
+    switch (access_type) {
+        case AccessType::R:
+        case AccessType::READ:
+            hierarchy.cpu_read(address);
+            break;
+        case AccessType::W:
+        case AccessType::WRITE:
+            hierarchy.cpu_write(address);
+            break;
+        default:
+            std::cerr << "MemorySystem: Invalid access type. Use R for read or W for write." << std::endl;
+            return;
     }
 }
 

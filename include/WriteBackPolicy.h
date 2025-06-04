@@ -1,9 +1,11 @@
 #pragma once
 
 #include "Policies.h"
-#include "MemoryAddress.h"
 
-class WriteBackPolicy : public WritePolicyInterface {
+/**
+ * @brief Implements the write-back policy for cache writes.
+ */
+class WriteBackPolicy final : public WritePolicyInterface {
 public:
     virtual void on_write_hit(
         CacheLevel& current_level, 

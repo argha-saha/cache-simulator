@@ -1,5 +1,7 @@
 #include "CacheHierarchy.h"
 
+#include <iostream>
+
 void CacheHierarchy::add_level(CacheConfig config) {
     CacheLevel* previous_level = levels.empty() ? nullptr : levels.back().get();
     auto new_level = std::make_unique<CacheLevel>(config, nullptr);
@@ -49,7 +51,7 @@ void CacheHierarchy::print_statistics() const {
         }
     }
 
-    std::cout << "--- Main Memory Accesses ---\n";
+    std::cout << "\n=== Main Memory Accesses ===\n";
     std::cout << "Reads: " << main_memory_reads << std::endl;
     std::cout << "Writes: " << main_memory_writes << std::endl;
 }

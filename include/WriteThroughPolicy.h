@@ -1,9 +1,11 @@
 #pragma once
 
 #include "Policies.h"
-#include "MemoryAddress.h"
 
-class WriteThroughPolicy : public WritePolicyInterface {
+/**
+ * @brief Implements the write-through policy for cache writes.
+ */
+class WriteThroughPolicy final : public WritePolicyInterface {
 public:
     virtual void on_write_hit(
         CacheLevel& current_level, 

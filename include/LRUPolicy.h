@@ -1,18 +1,13 @@
 #pragma once
 
-#include <iostream>
-#include <limits>
 #include <vector>
 
 #include "CacheSet.h"
-#include "CacheBlock.h"
 #include "Policies.h"
 
-class LRUPolicy : public EvictionPolicyInterface {
+class LRUPolicy final : public EvictionPolicyInterface {
 public:
-    /**
-     * @brief Constructs a new LRU eviction policy.
-     */
+    // Default constructor
     LRUPolicy() = default;
 
     /** 

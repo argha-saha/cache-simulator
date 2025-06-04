@@ -1,16 +1,16 @@
 #pragma once
 
+#include <memory>
+
 #include "CacheConfig.h"
 #include "CacheLevel.h"
 #include "MemoryAccess.h"
 #include "Policies.h"
 
-#include <memory>
-
-class CacheHierarchy : public MemoryAccessInterface {
+class CacheHierarchy final : public MemoryAccessInterface {
 public:
+    // Default constructor
     CacheHierarchy() = default;
-    virtual ~CacheHierarchy() = default;
 
     // Prevent copying and moving
     CacheHierarchy(const CacheHierarchy&) = delete;
@@ -18,14 +18,29 @@ public:
     CacheHierarchy(CacheHierarchy&&) = delete;
     CacheHierarchy& operator=(CacheHierarchy&&) = delete;
 
-    void add_level(CacheConfig config);
-
-    void cpu_read(uint64_t address);
-
-    void cpu_write(uint64_t address);
-
     void access_memory(uint64_t address, bool write) override;
 
+    /**
+     * @brief Adds a new cache level to the hierarchy.
+     * @param config Configuration for the new cache level.
+     */
+    void add_level(CacheConfig config);
+
+    /**
+     * @brief Initiates a CPU read request.
+     * @param address Memory address to read from.
+     */
+    void cpu_read(uint64_t address);
+
+    /**
+     * @brief Initiates a CPU write request.
+     * @param address Memory address to write to.
+     */
+    void cpu_write(uint64_t address);
+
+    /**
+     * @brief Prints statistics for all cache levels and main memory.
+     */
     void print_statistics() const;
 
 private:
