@@ -5,16 +5,35 @@
 
 class CacheBlock {
 public:
+    /**
+     * @brief Default constructor for CacheBlock.
+     */
     CacheBlock() = default;
 
-    uint64_t get_tag() const;
+    /**
+     * @brief Reconstructs the address from the block's tag, set index, and offset bits.
+     * @param set_index The index of the set in which this block resides.
+     * @param index_bits The number of bits used for the index.
+     * @param offset_bits The number of bits used for the offset within the block.
+     * @return The reconstructed address.
+     */
     uint64_t get_address(uint64_t set_index, uint32_t index_bits, uint32_t offset_bits) const;
-    bool is_valid() const;
-    bool is_dirty() const;
-    void set_tag(uint64_t new_tag);
-    void set_valid(bool new_valid);
-    void set_dirty(bool new_dirty);
+
+    /**
+     * @brief Resets the block to its initial state.
+     * Clears the tag, sets valid to false, and dirty to false.
+     */
     void reset();
+
+    // Getters
+    uint64_t get_tag() const { return tag; }
+    bool is_valid() const { return valid; }
+    bool is_dirty() const { return dirty; }
+
+    // Setters
+    void set_tag(uint64_t new_tag) { tag = new_tag; }
+    void set_valid(bool new_valid) { valid = new_valid; }
+    void set_dirty(bool new_dirty) { dirty = new_dirty; }
 
 private:
     uint64_t tag = 0;
