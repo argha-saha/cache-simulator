@@ -80,18 +80,6 @@ CacheLevel::CacheLevel(CacheConfig config, CacheLevel* next_level)
     }
 }
 
-const std::string& CacheLevel::get_name() const {
-    return name;
-}
-
-const uint32_t CacheLevel::get_block_size() const {
-    return block_size;
-}
-
-const uint32_t CacheLevel::get_num_sets() const {
-    return num_sets;
-}
-
 void CacheLevel::handle_miss(uint64_t address, bool is_write) {
     if (next_level) {
         // Read request to fetch data from the next level
@@ -232,24 +220,4 @@ bool CacheLevel::write(uint64_t address) {
 void CacheLevel::fill(uint64_t address) {
     MemoryAddress mem_address(address, block_size, num_sets);
     evict_and_replace(mem_address, mem_address.index);
-}
-
-CacheLevel* CacheLevel::get_next_level() const {
-    return next_level;
-}
-
-void CacheLevel::set_next_level(CacheLevel* level) {
-    next_level = level;
-}
-
-MemoryAccessInterface* CacheLevel::get_memory_accessor() const {
-    return memory_accessor;
-}
-
-void CacheLevel::set_memory_accessor(MemoryAccessInterface* accessor) {
-    memory_accessor = accessor;
-}
-
-CacheStatistics& CacheLevel::get_statistics() {
-    return statistics;
 }

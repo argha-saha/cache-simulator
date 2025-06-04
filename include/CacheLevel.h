@@ -45,26 +45,6 @@ public:
     CacheLevel& operator=(CacheLevel&&) = delete;
 
     /**
-     * @return Name of the cache level.
-     */
-    const std::string& get_name() const;
-
-    /**
-     * @return Total capacity of this cache level in bytes.
-     */
-    const uint64_t get_capacity() const { return capacity;}
-
-    /**
-     * @return Block size of this cache level in bytes.
-     */
-    const uint32_t get_block_size() const;
-
-    /**
-     * @return Number of sets in this cache level.
-     */
-    const uint32_t get_num_sets() const;
-
-    /**
      * @brief Gets a reference to a specific CacheSet within this cache level.
      * @param index The index of the set to retrieve.
      * @return Reference to the CacheSet object.
@@ -91,33 +71,18 @@ public:
      */
     void fill(uint64_t address);
 
-    /**
-     * @brief Returns a pointer to the next cache level.
-     */
-    CacheLevel* get_next_level() const;
+    // Getters
+    const std::string& get_name() const { return name; }
+    const uint32_t get_capacity() const { return capacity; }
+    const uint32_t get_block_size() const { return block_size; }
+    const uint32_t get_num_sets() const { return num_sets; }
+    CacheLevel* get_next_level() const { return next_level; }
+    MemoryAccessInterface* get_memory_accessor() const { return memory_accessor; }
+    CacheStatistics& get_statistics() { return statistics; }
 
-    /**
-     * @brief Sets the next cache level in the hierarchy.
-     * @param level Pointer to the next CacheLevel instance, or nullptr if this is the last level.
-     */
-    void set_next_level(CacheLevel* level);
-
-    /**
-     * @brief Returns a pointer to the memory accessor.
-     */
-    MemoryAccessInterface* get_memory_accessor() const;
-
-    /**
-     * @brief Sets the memory accessor for this cache level.
-     * @param accessor Pointer to the MemoryAccessInterface instance to be used for memory accesses.
-     */
-    void set_memory_accessor(MemoryAccessInterface* accessor);
-
-    /**
-     * @brief Returns the statistics for this cache level.
-     * @return Reference to the CacheStatistics object.
-     */
-    CacheStatistics& get_statistics();
+    // Setters
+    void set_next_level(CacheLevel* level) { next_level = level; }
+    void set_memory_accessor(MemoryAccessInterface* accessor) { memory_accessor = accessor; }
 
 private:
     void handle_miss(uint64_t address, bool is_write);

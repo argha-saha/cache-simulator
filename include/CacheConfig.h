@@ -28,4 +28,21 @@ struct CacheConfig {
     EvictionPolicyType eviction_policy = EvictionPolicyType::LRU;
     WritePolicyType write_policy = WritePolicyType::WRITE_BACK;
     AllocationPolicyType allocation_policy = AllocationPolicyType::WRITE_ALLOCATE;
+
+    /**
+     * @brief Constructs a CacheConfig with specified parameters.
+     * @param name Cache name (e.g., "L1", "L2")
+     * @param capacity Cache size in bytes
+     * @param block_size Size of each cache block in bytes
+     * @param associativity Number of blocks per set
+     * @param eviction_policy Eviction policy type
+     * @param write_policy Write policy type
+     * @param allocation_policy Allocation policy type
+     */
+    CacheConfig(const std::string& name, uint64_t capacity, uint32_t block_size,
+                uint32_t associativity, EvictionPolicyType eviction_policy,
+                WritePolicyType write_policy, AllocationPolicyType allocation_policy)
+        : name(name), capacity(capacity), block_size(block_size),
+          associativity(associativity), eviction_policy(eviction_policy),
+          write_policy(write_policy), allocation_policy(allocation_policy) {}
 };
